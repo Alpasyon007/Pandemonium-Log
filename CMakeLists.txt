@@ -18,6 +18,7 @@ project(Logger)
 add_executable(
 	Logger
 	${SOURCE_DIR}/main.cpp
+	${SOURCE_DIR}/Asserter/Asserter.h
 	${SOURCE_DIR}/Logger/Logger.cpp
 	${SOURCE_DIR}/Logger/Logger.h
 	)
@@ -26,5 +27,6 @@ add_executable(
 target_include_directories(
 		Logger
 		PRIVATE
+		${SOURCE_DIR}/Asserter
 		${SOURCE_DIR}/Logger
 	)

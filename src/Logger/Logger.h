@@ -4,12 +4,12 @@
 #include <chrono>
 #include <ctime>
 
-#define LOG_INFO 1
-#define LOG_DEBUG 1
-#define LOG_WARN 1
-#define LOG_ERROR 1
+#define LOG_INFO_ENABLED 1
+#define LOG_DEBUG_ENABLED 1
+#define LOG_WARN_ENABLED 1
+#define LOG_ERROR_ENABLED 1
 
-#if LOG_INFO
+#if LOG_INFO_ENABLED
 	#define LOG_INFO(__MSG__, ...)													\
 		do {																		\
 			Logger::Log(Logger::INFO, __FILE__, __LINE__, __MSG__,  ##__VA_ARGS__);	\
@@ -18,7 +18,7 @@
 	#define LOG_INFO(__MSG__, ...)
 #endif
 
-#if LOG_DEBUG
+#if LOG_DEBUG_ENABLED
 	#define LOG_DEBUG(__MSG__, ...)													\
 		do {																		\
 			Logger::Log(Logger::DEBUG, __FILE__, __LINE__, __MSG__, ##__VA_ARGS__);	\
@@ -27,7 +27,7 @@
 	#define LOG_DEBUG(__MSG__, ...)
 #endif
 
-#if LOG_WARN
+#if LOG_WARN_ENABLED
 	#define LOG_WARN(__MSG__, ...)													\
 		do {																		\
 			Logger::Log(Logger::WARN, __FILE__, __LINE__, __MSG__,  ##__VA_ARGS__);	\
@@ -36,7 +36,7 @@
 	#define LOG_WARN(__MSG__, ...)
 #endif
 
-#if LOG_ERROR
+#if LOG_ERROR_ENABLED
 	#define LOG_ERROR(__MSG__, ...)													\
 		do {																		\
 			Logger::Log(Logger::ERROR, __FILE__, __LINE__, __MSG__, ##__VA_ARGS__);	\
@@ -76,6 +76,7 @@ namespace Logger {
 		default:
 			break;
 		}
+		return "INVALID";
 	};
 
 	template <typename... Args> static void Log(const LogLevel logLevel, const char* file, const int line, const char* msg, Args... args) {
