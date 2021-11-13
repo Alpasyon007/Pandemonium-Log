@@ -22,13 +22,15 @@ add_executable(
 	${SOURCE_DIR}/Logger/Logger.cpp
 	${SOURCE_DIR}/Logger/Logger.h
 	${SOURCE_DIR}/Common/Common.h
-	)
+	${SOURCE_DIR}/Breaker/Breaker.h
+)
 
 # Include target directories
 target_include_directories(
-		Logger
-		PRIVATE
-		${SOURCE_DIR}/Asserter
-		${SOURCE_DIR}/Logger
-		${SOURCE_DIR}/Common
-	)
+	Logger
+	PRIVATE
+	${SOURCE_DIR}/Asserter
+	${SOURCE_DIR}/Logger
+	${SOURCE_DIR}/Common
+	${SOURCE_DIR}/Breaker
+)
