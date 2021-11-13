@@ -21,6 +21,7 @@ add_executable(
 	${SOURCE_DIR}/Asserter/Asserter.h
 	${SOURCE_DIR}/Logger/Logger.cpp
 	${SOURCE_DIR}/Logger/Logger.h
+	${SOURCE_DIR}/Common/Common.h
 	)
 
 # Include target directories
@@ -29,4 +30,5 @@ target_include_directories(
 		PRIVATE
 		${SOURCE_DIR}/Asserter
 		${SOURCE_DIR}/Logger
+		${SOURCE_DIR}/Common
 	)
