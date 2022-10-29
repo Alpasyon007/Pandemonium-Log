@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cstring>
+#include <chrono>
 
 namespace Common {
 	// Remove file path from __FILE__
@@ -10,5 +10,27 @@ namespace Common {
 			if(file[i] == '/') { count = i + 1; }
 		}
 		return file += count;
+	}
+
+	static char* GetFormattedTime() {
+		static char buffer[26];
+
+		// Time Vars
+		tm timeInfo;
+		std::chrono::system_clock::time_point currentTime = std::chrono::system_clock::now();
+		time_t now = std::chrono::system_clock::to_time_t(currentTime);
+		localtime_s(&timeInfo, &now);
+
+		// Time and File
+		sprintf_s(buffer, "[%d %d %d %d:%d:%d.%d]",
+							timeInfo.tm_mday,
+							timeInfo.tm_mon + 1,
+							timeInfo.tm_year + 1900,
+							timeInfo.tm_hour,
+							timeInfo.tm_min,
+							timeInfo.tm_sec,
+							static_cast<int>(std::chrono::duration_cast<std::chrono::milliseconds>(currentTime.time_since_epoch()).count() % 1000));
+
+		return buffer;
 	}
 }

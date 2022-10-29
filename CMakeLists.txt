@@ -4,9 +4,10 @@
 cmake_minimum_required(VERSION 3.10)
 
 # Compiler Settings
-set(CMAKE_CXX_COMPILER "/usr/bin/g++")
+set(CMAKE_CXX_COMPILER MSVC)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W 4 -Wall")
 
 # Set Variables
 set(SOURCE_DIR src)
@@ -22,7 +23,7 @@ add_executable(
 	${SOURCE_DIR}/Logger/Logger.cpp
 	${SOURCE_DIR}/Logger/Logger.h
 	${SOURCE_DIR}/Common/Common.h
-	${SOURCE_DIR}/Breaker/Breaker.h
+	${SOURCE_DIR}/Break/Break.h
 )
 
 # Include target directories
@@ -32,5 +33,5 @@ target_include_directories(
 	${SOURCE_DIR}/Asserter
 	${SOURCE_DIR}/Logger
 	${SOURCE_DIR}/Common
-	${SOURCE_DIR}/Breaker
+	${SOURCE_DIR}/Break
 )

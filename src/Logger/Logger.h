@@ -1,8 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include <chrono>
-#include <ctime>
 #include <map>
 
 #define LOG_INFO_ENABLED 1
@@ -53,6 +51,7 @@ namespace Logger {
 		DEBUG,
 		WARN,
 		ERROR,
+		COUNT
 	};
 
 	static LogLevel logLevel = ERROR;
@@ -80,25 +79,15 @@ namespace Logger {
 
 	template <typename... Args> static void Log(const LogLevel logLevel, const char* file, const int line, const char* msg, Args... args) {
 		if(logLevel >= INFO) {
-			// Time Vars
-			time_t rawtime;
-			tm* timeinfo;
-			time(&rawtime);
-			timeinfo = localtime(&rawtime);
+			// Time
+			fprintf(outStream, "%s", Common::GetFormattedTime());
 
-			// Time and File
-			fprintf(outStream, "[%d %d %d %d:%d:%d][%s:%d]",
-								timeinfo->tm_mday,
-								timeinfo->tm_mon + 1,
-								timeinfo->tm_year + 1900,
-								timeinfo->tm_hour,
-								timeinfo->tm_min,
-								timeinfo->tm_sec,
-								file,
-								line);
+			// File
+			fprintf(outStream, "[%s:%d]", file, line);
 
 			// Log Level
 			fprintf(outStream, ToText(logLevel));
+
 			// Log
 			fprintf(outStream, msg, args...);
 			fprintf(outStream, "\n");

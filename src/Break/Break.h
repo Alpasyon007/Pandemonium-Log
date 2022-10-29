@@ -13,4 +13,6 @@
 	#define DEBUG_BREAK()	__asm__ volatile(".inst 0xd4200000");
 #elif defined(__powerpc__)
 	#define DEBUG_BREAK()	__asm__ volatile(".4byte 0x7d821008");
+#else
+	#define DEBUG_BREAK() // Make sure DEBUG_BREAK is always defined
 #endif

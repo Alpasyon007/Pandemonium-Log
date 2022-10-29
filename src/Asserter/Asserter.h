@@ -27,7 +27,7 @@
 				GET_4TH_ARG(__VA_ARGS__, ASSERT_3_ARGS, \
 				ASSERT_2_ARGS, ASSERT_1_ARGS, )
 
-	#define ASSERT(...) ASSERT_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
+	#define ASSERT(...) ASSERT_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)	
 #else
 	#define ASSERT(expr, __MSG__)
 #endif
@@ -38,21 +38,10 @@ namespace Asserter {
 
 	template <typename... Args> static void Assert(const char* file, const int line, const char* expr, const char* msg, Args... args) {
 		// Time Vars
-		time_t rawtime;
-		tm* timeinfo;
-		time(&rawtime);
-		timeinfo = localtime(&rawtime);
+		fprintf(outStream, "%s", Common::GetFormattedTime());
 
-		// Time and File
-		fprintf(outStream, "[%d %d %d %d:%d:%d][%s:%d]",
-							timeinfo->tm_mday,
-							timeinfo->tm_mon + 1,
-							timeinfo->tm_year + 1900,
-							timeinfo->tm_hour,
-							timeinfo->tm_min,
-							timeinfo->tm_sec,
-							file,
-							line);
+		// File
+		fprintf(outStream, "[%s:%d]", file, line);
 
 		// Log
 		fprintf(outStream, "[ASSERTION FAILED]: (%s) ", expr);

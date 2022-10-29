@@ -1,12 +1,13 @@
-#include "Logger/Logger.h"
-#include "Asserter/Asserter.h"
-#include "Breaker/Breaker.h"
+#include "Logger.h"
+#include "Asserter.h"
+#include "Break.h"
 
 int main() {
 	int a = 5;
 	char* b = "BYE";
 
 	ASSERT(a < 1);
+	// ASSERT(a < 1, "HELLO");
 
 	DEBUG_BREAK();
 
