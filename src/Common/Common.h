@@ -13,7 +13,7 @@ namespace Common {
 	}
 
 	static char* GetFormattedTime() {
-		static char buffer[26];
+		static char buffer[28];
 
 		// Time Vars
 		tm timeInfo;
@@ -22,7 +22,7 @@ namespace Common {
 		localtime_s(&timeInfo, &now);
 
 		// Time and File
-		sprintf_s(buffer, "[%d %d %d %d:%d:%d.%d]",
+		sprintf_s(buffer, "[%d %d %d][%d:%d:%d.%d]",
 							timeInfo.tm_mday,
 							timeInfo.tm_mon + 1,
 							timeInfo.tm_year + 1900,

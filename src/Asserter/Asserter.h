@@ -25,7 +25,7 @@
 	#define GET_4TH_ARG(arg1, arg2, arg3, arg4, ...) arg4
 	#define ASSERT_MACRO_CHOOSER(...) 					\
 				GET_4TH_ARG(__VA_ARGS__, ASSERT_3_ARGS, \
-				ASSERT_2_ARGS, ASSERT_1_ARGS, )
+				ASSERT_2_ARGS, ASSERT_1_ARGS)
 
 	#define ASSERT(...) ASSERT_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)	
 #else
@@ -44,7 +44,7 @@ namespace Asserter {
 		fprintf(outStream, "[%s:%d]", file, line);
 
 		// Log
-		fprintf(outStream, "[ASSERTION FAILED]: (%s) ", expr);
+		fprintf(outStream, "\033[1;31m[ASSERTION FAILED]\033[0m: (%s) ", expr);
 		fprintf(outStream, msg, args...);
 		fprintf(outStream, "\n");
 	}

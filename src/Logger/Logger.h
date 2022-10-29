@@ -62,10 +62,10 @@ namespace Logger {
 
 	static const char* ToText(LogLevel level) {
 		std::map<LogLevel, const char*> levelStr = {
-			{INFO,		"[INFO]: "},
-			{DEBUG,		"[DEBUG]: "},
-			{WARN,		"[WARN]: "},
-			{ERROR,		"[ERROR]: "},
+			{INFO,		"\033[1;30m[INFO]\033[0m: "},
+			{DEBUG,		"\033[1;36m[DEBUG]\033[0m: "},
+			{WARN,		"\033[1;33m[WARN]\033[0m: "},
+			{ERROR,		"\033[1;31m[ERROR]\033[0m: "},
 		};
 
 		for(auto logLevel : levelStr) {

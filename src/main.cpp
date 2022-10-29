@@ -7,7 +7,8 @@ int main() {
 	char* b = "BYE";
 
 	ASSERT(a < 1);
-	// ASSERT(a < 1, "HELLO");
+	ASSERT(a < 1, "HELLO");
+	ASSERT(a < 1, "HELLO %d", a);
 
 	DEBUG_BREAK();
 
