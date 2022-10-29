@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Logger/Logger.h"
-#include "../Common/Common.h"
+#include "Logger.h"
+#include "Common.h"
 
 #define ASSERTION 1
 
