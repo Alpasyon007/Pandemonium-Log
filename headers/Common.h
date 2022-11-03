@@ -1,6 +1,6 @@
 #pragma once
 
-#include <chrono>
+#include "ppch.h"
 
 namespace Common {
 	// Remove file path from __FILE__

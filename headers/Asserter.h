@@ -32,9 +32,9 @@
 	#define ASSERT(expr, __MSG__)
 #endif
 
-namespace Asserter {
-	static FILE* outStream = stdout;
-	static void SetOutStream(FILE* stream) { outStream = stream; };
+class Asserter {
+public:
+	inline static void SetOutStream(FILE* stream) { outStream = stream; };
 
 	template <typename... Args> static void Assert(const char* file, const int line, const char* expr, const char* msg, Args... args) {
 		// Time Vars
@@ -48,4 +48,6 @@ namespace Asserter {
 		fprintf(outStream, msg, args...);
 		fprintf(outStream, "\n");
 	}
-}
+private:
+	inline static FILE* outStream = stdout;
+};

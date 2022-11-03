@@ -1,7 +1,6 @@
 #pragma once
 
-#include <iostream>
-#include <map>
+#include "ppch.h"
 
 #define LOG_INFO_ENABLED 1
 #define LOG_DEBUG_ENABLED 1
@@ -38,34 +37,31 @@
 #if LOG_ERROR_ENABLED
 	#define LOG_ERROR(__MSG__, ...)																			\
 		do {																								\
-			Logger::Log(Logger::ERROR, Common::FormatFileName(__FILE__), __LINE__, __MSG__, ##__VA_ARGS__);	\
+			Logger::Log(Logger::ERR, Common::FormatFileName(__FILE__), __LINE__, __MSG__, ##__VA_ARGS__);	\
 		} while (false);
 #else
 	#define LOG_ERROR(__MSG__, ...)
 #endif
 
-namespace Logger {
-
+class Logger {
+public:
 	enum LogLevel {
 		INFO = 0,
 		DEBUG,
 		WARN,
-		ERROR,
+		ERR,
 		COUNT
 	};
 
-	static LogLevel logLevel = ERROR;
-	static FILE* outStream = stdout;
+	inline static void SetLogLevel(LogLevel level) { logLevel = level; }
+	inline static void SetOutStream(FILE* stream) { outStream = stream; }
 
-	static void SetLogLevel(LogLevel level) { logLevel = level; };
-	static void SetOutStream(FILE* stream) { outStream = stream; };
-
-	static const char* ToText(LogLevel level) {
+	inline static const char* ToText(LogLevel level) {
 		std::map<LogLevel, const char*> levelStr = {
 			{INFO,		"\033[1;30m[INFO]\033[0m: "},
 			{DEBUG,		"\033[1;36m[DEBUG]\033[0m: "},
 			{WARN,		"\033[1;33m[WARN]\033[0m: "},
-			{ERROR,		"\033[1;31m[ERROR]\033[0m: "},
+			{ERR,		"\033[1;31m[ERROR]\033[0m: "},
 		};
 
 		for(auto logLevel : levelStr) {
@@ -75,7 +71,7 @@ namespace Logger {
 		}
 
 		return nullptr;
-	};
+	}
 
 	template <typename... Args> static void Log(const LogLevel logLevel, const char* file, const int line, const char* msg, Args... args) {
 		if(logLevel >= INFO) {
@@ -92,5 +88,8 @@ namespace Logger {
 			fprintf(outStream, msg, args...);
 			fprintf(outStream, "\n");
 		}
-	};
-}
+	}
+private:
+	inline static LogLevel logLevel = ERR;
+	inline static FILE* outStream = stdout;
+};
