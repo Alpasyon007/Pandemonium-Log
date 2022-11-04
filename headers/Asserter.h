@@ -1,40 +1,44 @@
 #pragma once
 
-#include "Logger.h"
 #include "Common.h"
+#include "Logger.h"
 
 #define ASSERTION 1
 
 #if ASSERTION
-	#define ASSERT_1_ARGS(expr)																				\
-		if (expr) { } 																						\
-		else {																								\
-			Asserter::Assert(Common::FormatFileName(__FILE__), __LINE__, #expr, "", "");					\
-		}
-	#define ASSERT_2_ARGS(expr, message)																	\
-		if (expr) { } 																						\
-		else {																								\
-			Asserter::Assert(Common::FormatFileName(__FILE__), __LINE__, #expr, message, "");				\
-		}
-	#define ASSERT_3_ARGS(expr, message, ...) 																\
-		if (expr) { } 																						\
-		else {																								\
-			Asserter::Assert(Common::FormatFileName(__FILE__), __LINE__, #expr, message, ##__VA_ARGS__);	\
-		}
+	#define ASSERT_1_ARGS(expr)                                                              \
+		do {                                                                                 \
+			if(expr) {                                                                       \
+			} else {                                                                         \
+				Asserter::Assert(Common::FormatFileName(__FILE__), __LINE__, #expr, "", ""); \
+			}                                                                                \
+		} while(false)
+	#define ASSERT_2_ARGS(expr, message)                                                          \
+		do {                                                                                      \
+			if(expr) {                                                                            \
+			} else {                                                                              \
+				Asserter::Assert(Common::FormatFileName(__FILE__), __LINE__, #expr, message, ""); \
+			}                                                                                     \
+		} while(false)
+	#define ASSERT_3_ARGS(expr, message, ...)                                                                \
+		do {                                                                                                 \
+			if(expr) {                                                                                       \
+			} else {                                                                                         \
+				Asserter::Assert(Common::FormatFileName(__FILE__), __LINE__, #expr, message, ##__VA_ARGS__); \
+			}                                                                                                \
+		} while(false)
 
 	#define GET_4TH_ARG(arg1, arg2, arg3, arg4, ...) arg4
-	#define ASSERT_MACRO_CHOOSER(...) 					\
-				GET_4TH_ARG(__VA_ARGS__, ASSERT_3_ARGS, \
-				ASSERT_2_ARGS, ASSERT_1_ARGS)
+	#define ASSERT_MACRO_CHOOSER(...)				 GET_4TH_ARG(__VA_ARGS__, ASSERT_3_ARGS, ASSERT_2_ARGS, ASSERT_1_ARGS)
 
-	#define ASSERT(...) ASSERT_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)	
+	#define ASSERT(...)								 ASSERT_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 #else
 	#define ASSERT(expr, __MSG__)
 #endif
 
 class Asserter {
 public:
-	inline static void SetOutStream(FILE* stream) { outStream = stream; };
+	inline static void						SetOutStream(FILE* stream) { outStream = stream; };
 
 	template <typename... Args> static void Assert(const char* file, const int line, const char* expr, const char* msg, Args... args) {
 		// Time Vars
