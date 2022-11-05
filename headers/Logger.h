@@ -71,6 +71,10 @@ public:
 		return nullptr;
 	}
 
+	template <typename... Args> static void Log(const LogLevel logLevel, const char* file, const int line, std::string msg, Args... args) {
+		Log(logLevel, file, line, msg.data(), args...);
+	}
+
 	template <typename... Args> static void Log(const LogLevel logLevel, const char* file, const int line, const char* msg, Args... args) {
 		if(logLevel >= INFO) {
 			// Time
