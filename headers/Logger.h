@@ -11,7 +11,7 @@
 	#define LOG_INFO(__MSG__, ...)                                                                         \
 		do {                                                                                               \
 			Logger::Log(Logger::INFO, Common::FormatFileName(__FILE__), __LINE__, __MSG__, ##__VA_ARGS__); \
-		} while(false)
+		} while(false);
 #else
 	#define LOG_INFO(__MSG__, ...)
 #endif
@@ -20,7 +20,7 @@
 	#define LOG_DEBUG(__MSG__, ...)                                                                         \
 		do {                                                                                                \
 			Logger::Log(Logger::DEBUG, Common::FormatFileName(__FILE__), __LINE__, __MSG__, ##__VA_ARGS__); \
-		} while(false)
+		} while(false);
 #else
 	#define LOG_DEBUG(__MSG__, ...)
 #endif
@@ -54,6 +54,7 @@ public:
 	};
 
 	inline static void		  SetLogLevel(LogLevel level) { logLevel = level; }
+
 	inline static void		  SetOutStream(FILE* stream) { outStream = stream; }
 
 	inline static const char* ToText(LogLevel level) {
