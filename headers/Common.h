@@ -1,13 +1,14 @@
 #pragma once
 
-#include "ppch.h"
+#include <chrono>
+#include <string>
 
 namespace Common {
 	// Remove file path from __FILE__
 	static char* FormatFileName(char* file) {
 		int count = 0;
 		for(int i = 0; i < strlen(file); i++) {
-#if(PANDEMONIUM_PLATFORM_WINDOWS) // File path seperators are \ instead of / on windows
+#if defined(PANDEMONIUM_PLATFORM_WINDOWS) // File path seperators are \ instead of / on windows
 			if(file[i] == '\\')
 #else
 			if(file[i] == '/')
