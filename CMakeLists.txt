@@ -37,22 +37,41 @@
 # 	${SOURCE_DIR}/Common
 # 	${SOURCE_DIR}/Break
 # )
+cmake_minimum_required(VERSION 3.10)
+project(PandemoniumLog LANGUAGES CXX)
+
+option(PANDEMONIUM_ENABLE_COLOR "Enable ANSI color codes in log output" ON)
+option(PANDEMONIUM_ENABLE_ASSERT "Enable assertions" ON)
+
+if(NOT TARGET PandemoniumLog)
+	add_library(PandemoniumLog INTERFACE)
+endif()
+
 set_target_properties(PandemoniumLog PROPERTIES LINKER_LANGUAGE CXX)
 
-target_sources(
-	PandemoniumLog
-	PUBLIC
+target_sources(PandemoniumLog INTERFACE
 	${CMAKE_CURRENT_SOURCE_DIR}/Include/PandemoniumLog.h
 	${CMAKE_CURRENT_SOURCE_DIR}/headers/Asserter.h
 	${CMAKE_CURRENT_SOURCE_DIR}/headers/Logger.h
 	${CMAKE_CURRENT_SOURCE_DIR}/headers/Common.h
-	${CMAKE_CURRENT_SOURCE_DIR}/headers/Break.h
-)
+	${CMAKE_CURRENT_SOURCE_DIR}/headers/Break.h)
 
-target_include_directories(
-	PandemoniumLog 
-	PUBLIC 
-	${CMAKE_CURRENT_SOURCE_DIR}/headers
-)
+target_include_directories(PandemoniumLog INTERFACE
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/headers>
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Include>
+	$<INSTALL_INTERFACE:include>)
+
+if(PANDEMONIUM_ENABLE_ASSERT)
+	target_compile_definitions(PandemoniumLog INTERFACE ASSERTION=1)
+else()
+	target_compile_definitions(PandemoniumLog INTERFACE ASSERTION=0)
+endif()
+
+# (Optional) export color enable define if desired later
+# if(PANDEMONIUM_ENABLE_COLOR)
+#     target_compile_definitions(PandemoniumLog INTERFACE PANDEMONIUM_ENABLE_COLOR=1)
+# else()
+#     target_compile_definitions(PandemoniumLog INTERFACE PANDEMONIUM_ENABLE_COLOR=0)
+# endif()
 
 # target_compile_definitions(myLib PUBLIC)

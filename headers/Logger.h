@@ -1,6 +1,9 @@
 #pragma once
 
-#include <map>
+#include <cstdio>
+#include <string>
+#include <string_view>
+#include "Common.h"
 
 #define LOG_INFO_ENABLED  1
 #define LOG_DEBUG_ENABLED 1
@@ -53,46 +56,36 @@ public:
 		COUNT
 	};
 
-	inline static void		  SetLogLevel(LogLevel level) { logLevel = level; }
+	inline static void SetLogLevel(LogLevel level) { minLevel = level; }
 
-	inline static void		  SetOutStream(FILE* stream) { outStream = stream; }
+	inline static void SetOutStream(FILE* stream) { outStream = stream; }
 
 	inline static const char* ToText(LogLevel level) {
-		std::map<LogLevel, const char*> levelStr = {
-			{INFO, "\033[1;30m[INFO]\033[0m: "},
-			{DEBUG, "\033[1;36m[DEBUG]\033[0m: "},
-			{WARN, "\033[1;33m[WARN]\033[0m: "},
-			{ERR, "\033[1;31m[ERROR]\033[0m: "},
-		};
-
-		for(auto logLevel : levelStr) {
-			if(logLevel.first == level) { return logLevel.second; }
-		}
-
-		return nullptr;
+		static constexpr const char* levelText[COUNT] = {
+			"\033[1;30m[INFO]\033[0m: ",
+			"\033[1;36m[DEBUG]\033[0m: ",
+			"\033[1;33m[WARN]\033[0m: ",
+			"\033[1;31m[ERROR]\033[0m: "};
+		return (level >= 0 && level < COUNT) ? levelText[level] : "";
 	}
 
-	template <typename... Args> static void Log(const LogLevel logLevel, const char* file, const int line, std::string msg, Args... args) {
-		Log(logLevel, file, line, msg.data(), args...);
+	template <typename... Args> static void Log(const LogLevel lvl, const char* file, const int line, std::string msg, Args... args) {
+		Log(lvl, file, line, msg.c_str(), args...);
 	}
 
-	template <typename... Args> static void Log(const LogLevel logLevel, const char* file, const int line, const char* msg, Args... args) {
-		if(logLevel >= INFO) {
-			// Time
-			fprintf(outStream, "%s", Common::GetFormattedTime());
-
-			// File
-			fprintf(outStream, "[%s:%d]", file, line);
-
-			// Log Level
-			fprintf(outStream, ToText(logLevel));
-
-			// Log
-			fprintf(outStream, msg, args...);
-			fprintf(outStream, "\n");
-		}
+	template <typename... Args> static void Log(const LogLevel lvl, const char* file, const int line, const char* msg, Args... args) {
+		if(lvl < minLevel) return; // Correct filtering
+		// Time
+		std::fprintf(outStream, "%s", Common::GetFormattedTime());
+		// File
+		std::fprintf(outStream, "[%s:%d]", file, line);
+		// Level
+		std::fprintf(outStream, "%s", ToText(lvl));
+		// Message (printf-style)
+		std::fprintf(outStream, msg, args...);
+		std::fputc('\n', outStream);
 	}
 private:
-	inline static LogLevel logLevel	 = ERR;
-	inline static FILE*	   outStream = stdout;
+	inline static LogLevel minLevel  = INFO; // Default to INFO so all are shown unless changed
+	inline static FILE*    outStream = stdout;
 };
